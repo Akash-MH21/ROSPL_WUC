@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Uptime Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <div class="eyebrow">ROSPL · MINI PROJECT</div>
+            <h1>Website Uptime Checker</h1>
+            <p class="subtitle">Check whether a public website is reachable and measure its response time.</p>
+        </header>
+
+        <form method="POST" class="checker-form">
+            <label for="url">Website URL</label>
+            <div class="input-row">
+                <input
+                    type="text"
+                    id="url"
+                    name="url"
+                    placeholder="https://example.com"
+                    maxlength="2048"
+                    value="{{ result.url if result else '' }}"
+                    required
+                >
+                <button type="submit">Check website</button>
+            </div>
+            <p class="hint">Enter a public website address, such as example.com.</p>
+        </form>
+
+        {% if result %}
+        <section class="result-card" aria-live="polite">
+            <div class="result-heading">
+                <h2>Check result</h2>
+                <span class="status status-{{ result.status|lower }}">{{ result.status }}</span>
+            </div>
+            <div class="result-grid">
+                <div class="metric">
+                    <span class="metric-label">HTTP status code</span>
+                    <strong>{{ result.status_code }}</strong>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Response time</span>
+                    <strong>{% if result.response_time != "N/A" %}{{ result.response_time }} ms{% else %}N/A{% endif %}</strong>
+                </div>
+            </div>
+            <p class="checked-url"><strong>URL:</strong> {{ result.url }}</p>
+            <p class="message">{{ result.message }}</p>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>Educational project · Checks are performed only when you submit a URL.</p>
+        </footer>
+    </main>
+</body>
+</html>
